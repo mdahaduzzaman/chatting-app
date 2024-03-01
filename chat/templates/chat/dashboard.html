@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Dashboard</h2>
+    {% for user in users %}
+        {% if request.user.id < user.id %}
+            {% with room_name=request.user.username|add:'_'|add:user.username %}
+                <a href="{% url 'chat' room_name %}">{{ user.username }}</a>
+            {% endwith %}
+        {% else %}
+            {% with room_name=user.username|add:'_'|add:request.user.username %}
+                <a href="{% url 'chat' room_name %}">{{ user.username }}</a>
+            {% endwith %}
+        {% endif %}
+        <br/>
+    {% endfor %}
+
+    <p>You are logged in!</p>
+    <a href="{% url 'logout' %}">Logout</a>
+</body>
+</html>
